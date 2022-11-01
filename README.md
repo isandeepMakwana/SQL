@@ -12,7 +12,7 @@
 ```
 ```SQL
     SELECT
-	DISTINCT state --return Uniqic value !
+	DISTINCT state --return Uniqic value !🤩
     FROM customers;
 ```
 ---
@@ -25,14 +25,6 @@ SELECT * FROM customers WHERE birth_date > ' 1990-01-01 ';
 SELECT count(*) FROM orders WHERE order_date >= ' 2019-01-01 ';
 ```
 
----
-
- **Order by**
-```SQL
-SELECT * FROM customers
--- WHERE customer_id =1
-ORDER BY first_name;
-```
 ---
 
 [**AND , OR , NOT**](AND_OR_NOT.md)
@@ -138,6 +130,61 @@ SELECT * FROM customers WHERE last_name REGEXP '[a-h]e';
 SELECT * FROM customers WHERE first_name REGEXP 'ELKA|AMBUR';
 SELECT * FROM customers WHERE last_name REGEXP 'EY$|ON$';
 SELECT * FROM customers WHERE last_name REGEXP '^MY|SE';
-SELECT * FROM customers WHERE last_name REGEXP 'B[RU]';
+SELECT * FROM customers WHERE last_name REGEXP 'B[RUP]';
 
 ```
+
+---
+[**IS NULL**](ISNULL.md)
+
+```SQL
+
+-- IS NULL
+SELECT * FROM customers WHERE phone IS NULL; -- phone no. is null
+
+-- IS NOT NULL
+SELECT * FROM customers WHERE phone IS NOT NULL; -- phone no. is not null
+
+SELECT * FROM orders WHERE shipped_date IS NULL;
+
+```
+---
+
+[**Order by**](ORDER_BY.md)
+```SQL
+SELECT * FROM customers
+-- WHERE customer_id =1
+ORDER BY first_name;
+```
+
+
+
+```SQL
+
+SELECT * FROM customers ORDER BY first_name DESC;
+SELECT * FROM customers ORDER BY state,first_name;
+SELECT * FROM customers ORDER BY state DESC,first_name DESC;
+
+-- you can sort data with Alias
+
+SELECT first_name , last_name , 10 AS points FROM customer
+ORDER BY points , first_name;
+SELECT first_name , last_name , 10*point_value/total_number AS points FROM customer
+ORDER BY points , first_name;
+
+-- EX:
+
+SELECT * FROM order_items WHERE order_id=2 ORDER BY quantity*unit_price DESC;  -- you can use arthmatic operation !
+
+-- OR
+
+SELECT *, quantity*unit_price AS total_price FROM order_items WHERE order_id=2 ORDER BY total_price DESC;
+
+```
+
+```SQL
+-- using column number (NOT Recommended)
+SELECT first_name , last_name , 10 AS points FROM customer
+ORDER BY 1,2; -- 1 means first_name and 2 means last_name
+```
+---
