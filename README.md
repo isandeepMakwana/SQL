@@ -1,7 +1,6 @@
 # SQL CheetShet
 
-## SELECT caluse
-
+[**SELECT caluse**](SELECT_caluse.md)
 
 ```SQL
     SELECT
@@ -17,7 +16,7 @@
     FROM customers;
 ```
 ---
-**Where clause**
+[**Where clause**](WHERE_CLAUSE.md)
 
 ```SQL
 -- operation with date
@@ -36,7 +35,7 @@ ORDER BY first_name;
 ```
 ---
 
-**AND , OR , NOT**
+[**AND , OR , NOT**](AND_OR_NOT.md)
 ```SQL
 -- AND execute 1st (*)
 -- OR execute 2nd (+)
@@ -52,14 +51,14 @@ SELECT * FROM order_items WHERE order_id=6 AND unit_price * quantity > 30 -- you
 ---
 
 
-**IN**
+[**IN**](IN.md)
 
 ```SQL
 SELECT * FROM customers WHERE state IN ('VA','FL','GA');
 ```
 ---
 
-**BETWEEN**
+[**BETWEEN**](BETWEEN.md)
 ```SQL
 SELECT * FROM customers WHERE points BETWEEN 1000 AND 3000;
 -- SELECT * FROM customers WHERE points >=1000 AND points<=3000;
@@ -74,23 +73,23 @@ SELECT * FROM customers WHERE birth_date BETWEEN '1990-01-01' AND '2000-01-01';
 
 -- '%' any number of characters
 
- SELECT * FROM customers WHERE last_name LIKE 'b%'; -- it find all last_name those contains b at biginning.
+SELECT * FROM customers WHERE last_name LIKE 'b%'; -- it find all records where last_name contains b at biginning.
 SELECT * FROM customers WHERE last_name LIKE 'brush%';
 
-SELECT * FROM customers WHERE last_name LIKE '%b%'; -- it find all last_name that contains b in ('starting ' , 'middle' ,'ending') please focuse on this.
+SELECT * FROM customers WHERE last_name LIKE '%b%'; -- it find all records where last_name contains b in ('starting ' , 'middle' ,'ending') please focuse on this.
 SELECT * FROM customers WHERE last_name LIKE '%y';
 
 -- '_' single character
-SELECT * FROM customers WHERE last_name LIKE '_y'; -- it pring all the last name that have length of 2 and the last chacter is y.
-SELECT * FROM customers WHERE last_name LIKE '_____t'; -- -- it pring all the last name that have length of 5 and the last chacter is t.
+SELECT * FROM customers WHERE last_name LIKE '_y'; -- it pring all records where last name have length of 2 and the last chacter is y.
+SELECT * FROM customers WHERE last_name LIKE '_____t'; -- -- it pring all records where last name have length of 5 and the last chacter is t.
 SELECT * FROM customers WHERE last_name LIKE 'b____y';
---  -- it pring all the last name that have length of 5 and the first chacter is b and last is y.
+--  -- it pring all records where last name have length of 5 and the first chacter is b and last is y.
 
 
 
-/* print all records when the address contains trail or avenue */
+/* print all records where address contains trail or avenue */
 SELECT * FROM customers WHERE address LIKE '%TRAIL%' OR address LIKE '%AVENUE%';
-/* print all records when phone number last charcter in not 9 */
+/* print all records where phone number last charcter in not 9 */
 SELECT * FROM customers WHERE phone_number NOT LIKE '%9';
 
 ```
@@ -110,27 +109,27 @@ SELECT * FROM customers WHERE last_name REGEXP 'field'; -- is equal to %field%
 SELECT * FROM customers WHERE last_name REGEXP '^b'; -- is equal to %b
 
 SELECT * FROM customers WHERE last_name REGEXP 'y$'; -- is equal to y%
+SELECT * FROM customers WHERE last_name REGEXP 'field'; -- is equal to %field%
 SELECT * FROM customers WHERE last_name REGEXP 'field|mac';  -- is equal to %field% or %mac%
+SELECT * FROM customers WHERE last_name REGEXP 'field|mac|rose'; -- is equal to %field% or %mac% or %rose%
+SELECT * FROM customers WHERE last_name REGEXP 'field$|mac$'; -- is equal to field% or mac%
 
-SELECT * FROM customers WHERE last_name REGEXP 'field|mac|rose';
-SELECT * FROM customers WHERE last_name REGEXP 'field';
-SELECT * FROM customers WHERE last_name REGEXP 'field$|mac$';
-
-SELECT * FROM customers WHERE last_name REGEXP 'field$|^mac|rose';
+SELECT * FROM customers WHERE last_name REGEXP 'field$|^mac|rose'; -- is equal to field% or %mac or %rose%
 
 SELECT * FROM customers WHERE last_name REGEXP '[gie]e';
--- it find.  ge
+-- it find.   ge
 -- 			 ie
 -- 			 me
 
 
 SELECT * FROM customers WHERE last_name REGEXP 'e[fmq]';
--- it find.  ef
+-- it find.   ef
 -- 			 em
 -- 			 eq
 
 SELECT * FROM customers WHERE last_name REGEXP '[a-h]e';
 
+--EX:-
 -- get the customers whose
 -- 		first name are ELKA or AMBUR
 -- 		last name end with EY or ON
