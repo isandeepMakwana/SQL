@@ -208,6 +208,7 @@ SELECT * FROM customers LIMIT 6,3;  -- 6 => string 6 records skip and then next 
 SELECT * FROM customers ORDER BY points DESC LIMIT 3;
 ```
 ---
+
 # "Retrieving-data-from-multiple-table"
 
 **INNER JOIN**
@@ -273,6 +274,7 @@ JOIN order_statuses os
 	ON o.status=os.order_status_id
 
 ```
+
 ## schemas [link](SCHEMAS.md)
 
 ![customers](images/Sandeep%20Makwana%20-%20Screen%20Shot%202022-11-02%20at%209.09.05%20AM.png)
