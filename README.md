@@ -274,7 +274,15 @@ JOIN order_statuses os
 	ON o.status=os.order_status_id
 
 ```
+**use composit key to join**
 
+```SQL
+SELECT *
+FROM order_items oi
+JOIN order_item_notes oin
+	ON oi.order_id = oin.order_id
+	AND oi.product_id = oin.product_id;
+```
 ## schemas [link](SCHEMAS.md)
 
 ![customers](images/Sandeep%20Makwana%20-%20Screen%20Shot%202022-11-02%20at%209.09.05%20AM.png)

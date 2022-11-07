@@ -62,3 +62,13 @@ JOIN order_statuses os
 	ON o.status=os.order_status_id
 
 ```
+
+**use composit key to join**
+
+```SQL
+SELECT *
+FROM order_items oi
+JOIN order_item_notes oin
+	ON oi.order_id = oin.order_id
+	AND oi.product_id = oin.product_id;
+```
