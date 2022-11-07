@@ -208,4 +208,3 @@ SELECT * FROM customers LIMIT 6,3;  -- 6 => string 6 records skip and then next 
 SELECT * FROM customers ORDER BY points DESC LIMIT 3;
 ```
 ---
----
