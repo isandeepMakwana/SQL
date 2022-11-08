@@ -292,3 +292,35 @@ JOIN order_item_notes oin
 ![order_items](images/Sandeep%20Makwana%20-%20Screen%20Shot%202022-11-02%20at%209.14.18%20AM.png)
 ![other_database_prducts table](images/Sandeep%20Makwana%20-%20Screen%20Shot%202022-11-02%20at%209.14.43%20AM.png)
 ![products](images/Sandeep%20Makwana%20-%20Screen%20Shot%202022-11-02%20at%209.16.31%20AM.png)
+
+---
+---
+# OUTER JOIN
+-   LEFT
+-   RIGHT
+
+**Convert INNER JOIN to OUTER JOIN**
+```SQL
+-- inner join
+SELECT
+c.customer_id,c.first_name , o.order_id
+FROM customers c
+JOIN orders o
+	ON c.customer_id = o.customer_id
+ORDER BY c.customer_id;
+
+
+-- left outer join
+SELECT c.customer_id, c.first_name , o.order_id
+FROM customers c
+LEFT JOIN orders o
+	ON c.customer_id = o.customer_id
+ORDER BY c.customer_id;
+
+-- right outer join
+SELECT c.customer_id, c.first_name , o.order_id
+FROM orders o
+RIGHT JOIN customers c
+	ON c.customer_id = o.customer_id
+ORDER BY c.customer_id
+```
