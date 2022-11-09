@@ -49,3 +49,15 @@ LEFT JOIN shippers sh
 JOIN order_statuses os
 	ON os.order_status_id =o.status
 ```
+
+**self outer join**
+
+```SQL
+SELECT
+	e.employee_id,
+	e.first_name,
+	m.first_name AS manager
+FROM employees e
+LEFT JOIN employees m
+	ON e.reports_to = m.employee_id
+```
