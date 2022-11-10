@@ -1,7 +1,7 @@
 **USING**
 
 instead of 'ON' we use USING
-it simplify our Query  but we only 'USING' when the column name is same in both tables
+it simplify our Query  but we only use 'USING' when the column name is same in both tables
 
 
 ```SQL

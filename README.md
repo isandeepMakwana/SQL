@@ -364,7 +364,7 @@ LEFT JOIN employees m
 [**USING**](USING.md)
 
 instead of 'ON' we use USING
-it simplify our Query  but we only 'USING' when the column name is same in both tables
+it simplify our Query  but we only use 'USING' clause when the column name is same in both tables
 
 
 ```SQL
@@ -413,7 +413,7 @@ JOIN payment_methods pm
 ---
 [**NATURAL JOIN**](NATURAL%20JOIN.md)
 
-In 'Natural Join' do not want to specify the situation
+In 'Natural Join' we don't need to specify the condition
 it automatically locates the simller column and join bases of them.
 ```SQL
 SELECT

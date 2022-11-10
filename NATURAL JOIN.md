@@ -1,6 +1,6 @@
 **NATURAL JOIN**
 
-In 'Natural Join' do not want to specify the situation
+In 'Natural Join' we don't need to specify the condition
 it automatically locates the simller column and join bases of them.
 
 ```SQL
