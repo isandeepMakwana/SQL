@@ -423,3 +423,95 @@ FROM orders o
 NATURAL JOIN customers c
 ```
 NOTE :<b> not recommanded</b>
+
+---
+[**CROSS JOIN**](CROSS%20JOIN.md)
+
+The CROSS JOIN keyword returns all matching records from both tables whether the other table matches or not.
+table1 records
+id,name
+1,a
+2,b
+
+table 2 records
+id,class
+1,x
+2,xII
+
+output:
+
+a,x
+a,xII
+b,x
+b,XII
+
+```SQL
+SELECT name , class
+FROM table1
+CROSS JOIN table2
+ORDER BY name
+```
+```SQL
+SELECT
+    c.frist_name AS customer,
+    p.name AS product
+FROM customers c
+CROSS JOIN products p
+ORDER BY c.frist_name
+```
+**implecit syntax**
+```SQL
+SELECT
+    c.frist_name AS customer,
+    p.name AS product
+FROM customers c , products p
+ORDER BY c.first_name
+```
+
+NOTE:
+If you add a WHERE clause (if table1 and table2 has a relationship), the CROSS JOIN will produce the same result as the INNER JOIN clause
+
+---
+
+[**UNION**](UNION.md)
+
+it used for combine 2 and more Queries
+
+```SQL
+SELECT
+    order_id,
+    order_date,
+    'Active' AS status
+FROM orders
+WHERE order_date >= '2019-01-01'
+
+UNION
+
+SELECT
+    order_id,
+    order_date,
+    'Archived' AS status
+FROM orders
+WHERE order_date < '2019-01-01';
+```
+
+```SQL
+SELECT first_name,
+FROM archived_orders
+UNION
+SELECT name
+FROM orders
+```
+
+--ex--
+```SQL
+SELECT c.customer_id , c.first_name , c.points, 'GOLD' AS type
+FROM customers c WHERE c.points > 3000
+UNION
+SELECT c.customer_id , c.first_name , c.points, 'Silver'
+FROM customers c WHERE c.points BETWEEN 2000 AND 3000
+UNION
+SELECT c.customer_id , c.first_name , c.points, 'Bronze'
+FROM customers c WHERE c.points < 2000
+ORDER BY first_name
+```
