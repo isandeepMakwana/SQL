@@ -1,4 +1,4 @@
-# SQL CheetShet
+# Learn SQL
 
 [**SELECT caluse**](SELECT_caluse.md)
 
@@ -292,3 +292,226 @@ JOIN order_item_notes oin
 ![order_items](images/Sandeep%20Makwana%20-%20Screen%20Shot%202022-11-02%20at%209.14.18%20AM.png)
 ![other_database_prducts table](images/Sandeep%20Makwana%20-%20Screen%20Shot%202022-11-02%20at%209.14.43%20AM.png)
 ![products](images/Sandeep%20Makwana%20-%20Screen%20Shot%202022-11-02%20at%209.16.31%20AM.png)
+
+---
+---
+# OUTER JOIN
+-   LEFT
+-   RIGHT
+
+**Convert INNER JOIN to OUTER JOIN**
+```SQL
+-- inner join
+SELECT
+c.customer_id,c.first_name , o.order_id
+FROM customers c
+JOIN orders o
+	ON c.customer_id = o.customer_id
+ORDER BY c.customer_id;
+
+
+-- left outer join
+SELECT c.customer_id, c.first_name , o.order_id
+FROM customers c
+LEFT JOIN orders o
+	ON c.customer_id = o.customer_id
+ORDER BY c.customer_id;
+
+-- right outer join
+SELECT c.customer_id, c.first_name , o.order_id
+FROM orders o
+RIGHT JOIN customers c
+	ON c.customer_id = o.customer_id
+ORDER BY c.customer_id
+```
+**outer join with multitable**
+```SQL
+SELECT c.customer_id,c.first_name,sh.name AS shipper FROM customers c
+LEFT JOIN orders o
+	ON c.customer_id = o.customer_id
+LEFT JOIN shippers sh
+	ON o.shipper_id = sh.shipper_id
+ORDER BY c.customer_id;
+```
+```SQL
+-- ex--
+SELECT o.order_date,o.order_id , c.first_name ,sh.name AS shipper ,os.name as status
+FROM orders o
+JOIN customers c
+	ON c.customer_id = o.customer_id
+LEFT JOIN shippers sh
+	ON o.shipper_id = sh.shipper_id
+JOIN order_statuses os
+	ON os.order_status_id =o.status
+```
+
+Note : Recommanded to always use same join in multiple table  like LEFT , LEFT
+
+
+**self outer join**
+
+```SQL
+SELECT
+	e.employee_id,
+	e.first_name,
+	m.first_name AS manager
+FROM employees e
+LEFT JOIN employees m
+	ON e.reports_to = m.employee_id
+```
+
+---
+[**USING**](USING.md)
+
+instead of 'ON' we use USING
+it simplify our Query  but we only use 'USING' clause when the column name is same in both tables
+
+
+```SQL
+SELECT
+    o.order_id
+    c.first_name
+FROM orders o
+JOIN customers c
+    --ON o.customer_id = c.customer_id
+    USING(customer_id)
+```
+
+**using with multitable**
+
+```SQL
+SELECT
+    o.order_id,
+    c.first_name,
+    sh.name AS shipper
+FROM orders o
+JOIN customers c
+    USING(customer_id)
+JOIN shippers sh
+    USING(shipper_id)
+```
+
+**using with compsite key**
+```SQL
+SELECT *
+FROM order_items oi
+JOIN order_item_notes oin
+    /* ON oi.order_id = oin.order_id
+    AND oi.product_id = oin.product_i */
+    USING(order_id,product_id)
+```
+
+```SQL
+-- ex --
+SELECT p.date , c.name ,p.amount  , pm.name as payment_method FROM payments p
+JOIN clients c
+	USING (client_id)
+JOIN payment_methods pm
+	ON payment_method = payment_method_id
+
+```
+---
+[**NATURAL JOIN**](NATURAL%20JOIN.md)
+
+In 'Natural Join' we don't need to specify the condition
+it automatically locates the simller column and join bases of them.
+```SQL
+SELECT
+    o.order_id,
+    c.first_name,
+FROM orders o
+NATURAL JOIN customers c
+```
+NOTE :<b> not recommanded</b>
+
+---
+[**CROSS JOIN**](CROSS%20JOIN.md)
+
+The CROSS JOIN keyword returns all matching records from both tables whether the other table matches or not.
+table1 records
+id,name
+1,a
+2,b
+
+table 2 records
+id,class
+1,x
+2,xII
+
+output:
+
+a,x
+a,xII
+b,x
+b,XII
+
+```SQL
+SELECT name , class
+FROM table1
+CROSS JOIN table2
+ORDER BY name
+```
+```SQL
+SELECT
+    c.frist_name AS customer,
+    p.name AS product
+FROM customers c
+CROSS JOIN products p
+ORDER BY c.frist_name
+```
+**implecit syntax**
+```SQL
+SELECT
+    c.frist_name AS customer,
+    p.name AS product
+FROM customers c , products p
+ORDER BY c.first_name
+```
+
+NOTE:
+If you add a WHERE clause (if table1 and table2 has a relationship), the CROSS JOIN will produce the same result as the INNER JOIN clause
+
+---
+
+[**UNION**](UNION.md)
+
+it used for combine 2 and more Queries
+
+```SQL
+SELECT
+    order_id,
+    order_date,
+    'Active' AS status
+FROM orders
+WHERE order_date >= '2019-01-01'
+
+UNION
+
+SELECT
+    order_id,
+    order_date,
+    'Archived' AS status
+FROM orders
+WHERE order_date < '2019-01-01';
+```
+
+```SQL
+SELECT first_name,
+FROM archived_orders
+UNION
+SELECT name
+FROM orders
+```
+
+--ex--
+```SQL
+SELECT c.customer_id , c.first_name , c.points, 'GOLD' AS type
+FROM customers c WHERE c.points > 3000
+UNION
+SELECT c.customer_id , c.first_name , c.points, 'Silver'
+FROM customers c WHERE c.points BETWEEN 2000 AND 3000
+UNION
+SELECT c.customer_id , c.first_name , c.points, 'Bronze'
+FROM customers c WHERE c.points < 2000
+ORDER BY first_name
+```
