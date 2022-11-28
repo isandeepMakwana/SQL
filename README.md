@@ -1191,3 +1191,123 @@ WHERE YEAR(order_date) = YEAR(NOW())
 
 - TIME_TO_SEC('09:00') - TIME_TO_SEC('09:02') => -120 sec
 - TIME_TO_SEC('09:02') - TIME_TO_SEC('09:00')  => 120
+
+
+---
+
+<mark>IFNULL vs COALESCE<mark>
+
+**IFNULL**
+
+```SQL
+
+USE sql_store;
+SELECT
+    order_id,
+    IFNULL(shipper_id, 'Not assigned') AS shipper
+FROM orders
+
+
+-- output : replaced behalf of the null with Not assigned
+```
+
+**COALESCE**
+```SQL
+SELECT
+    order_id,
+    COALESCE(shipper_id , comments, 'Not assigned') AS shipper
+FROM orders
+-- if shipper_id is null replaced with comments values , but if comments values is also null then it replaced with 'Not Assigned'
+
+-- shipper_id is null then return commments value but the comments value is also null then return 'not assigned'
+
+```
+
+
+--ex--
+```SQL
+SELECT
+    CONCAT(first_name , ' ', last_name) AS customer,
+    COALESCE(phone ,'Unknown') AS phone
+FROM customers
+
+-- or --
+
+SELECT
+    CONCAT(first_name , ' ', last_name) AS customer,
+    IFNULL(phone ,'Unknown') AS phone
+FROM customers
+
+```
+
+
+---
+
+<mark> IF statement vs CASE operator<mark>
+
+ **IF statement**
+
+ `IF(expression , first , second)`
+
+```SQL
+SELECT
+    order_id,
+    order_date,
+    IF(
+        YEAR(order_date) = YEAR(NOW()),
+        'Active',
+        'Archived'
+    ) AS category
+FROM orders
+```
+
+
+```SQL
+SELECT
+    prodcut_id,
+    name,
+    COUNT(*) AS orders
+    IF(COUNT(*) > 1 , 'Many times', 'Once') AS frequency
+FROM products
+JOIN order_items USING (product_id)
+GROUP BY product_id , name
+
+-- or --
+
+SELECT
+	product_id,
+    name,
+    (SELECT COUNT(*) FROM order_items WHERE product_id = p.product_id) AS orders,
+    (SELECT IF(orders=1,'once','Manytimes'))
+FROM products p
+HAVING orders>0;
+```
+
+**CASE operator**
+> if you want multiple conditions
+
+```SQL
+SELECT
+    order_id,
+    CASE
+        WHEN YEAR(order_date) = YEAR(NOW()) THEN 'Active'
+        WHEN YEAR(order_date) = YEAR(NOW())-1 THEN 'Last Year'
+        WHEN YEAR(order_date) = YEAR(NOW())-1 THEN 'Archived'
+        ELSE 'Future'
+    END AS category
+FROM orders
+
+```
+```SQL
+SELECT
+	CONCAT(first_name,' ',last_name) AS customer,
+    points,
+    CASE
+		WHEN (points >=3000) THEN 'GOLD'
+        WHEN points >=2000 THEN 'SELVER'
+        ELSE 'BRONZE'
+	END AS MADDLE
+FROM customers
+ORDER BY points DESC;
+```
+
