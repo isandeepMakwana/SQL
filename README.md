@@ -515,3 +515,255 @@ SELECT c.customer_id , c.first_name , c.points, 'Bronze'
 FROM customers c WHERE c.points < 2000
 ORDER BY first_name
 ```
+
+
+---
+
+
+# [**aggregate Functions**](Aggregate_Functions.md)
+
+- MAX()
+- MIN()
+- AVG()
+- SUM()
+- COUNT()
+
+
+```SQL
+SELECT
+    MAX(invoice_total) AS highest,
+    MIN(invoice_total) AS lowest,
+    AVG(invoice_total) AS average
+FROM invoices
+```
+```SQL
+SELECT
+    MAX(payment_date) AS highest,
+    MIN(invoice_total) AS lowest,
+    AVG(invoice_total) AS average
+FROM invoices
+```
+
+```SQL
+SELECT
+    MAX(invoice_total) AS highest,
+    MIN(invoice_total) AS lowest,
+    AVG(invoice_total) AS average,
+    SUM(invoice_total) AS total,
+    COUNT(invoice_total) AS number_of_invoices
+    COUNT(payment_date) AS count_of_payments
+FROM invoices
+```
+
+```SQL
+SELECT
+    MAX(invoice_total) AS highest,
+    MIN(invoice_total) AS lowest,
+    AVG(invoice_total) AS average,
+    SUM(invoice_total * 1.1) AS total,
+    COUNT(*) AS total_records
+FROM invoices
+WHERE invoice_date  >'2019-07-01'
+```
+
+
+
+```SQL
+SELECT
+    MAX(invoice_total) AS highest,
+    MIN(invoice_total) AS lowest,
+    AVG(invoice_total) AS average,
+    SUM(invoice_total * 1.1) AS total,
+    COUNT(DISTINCT client_id) AS total_records
+FROM invoices
+WHERE invoice_date  >'2019-07-01'
+```
+
+-- ex --
+
+```SQL
+SELECT
+    'First half of 2019' AS date_range,
+    SUM(invoice_total) AS total_sales,
+    SUM(payment_total) AS total_payments,
+    SUM(invoice_total - payment_total) AS What_we_expected
+FROM invoices
+WHERE invoice_date
+     BETWEEN '2019-01-01' AND '2019-06-30'
+
+UNION
+
+SELECT
+    'Second half of 2019' AS date_range,
+    SUM(invoice_total) AS
+    SUM(payment_total) AS total_payments,
+    SUM(invoice_total - payment_total) AS What_we_expected
+FROM invoices
+WHERE invoice_date
+    BETWEEN '2019-07-01' AND '2019-12-31'
+
+UNION
+
+SELECT
+    'Total' AS date_range,
+    SUM(invoice_total) AS
+    SUM(payment_total) AS total_payments,
+    SUM(invoice_total - payment_total) AS What_we_expected
+FROM invoices
+WHERE invoice_date
+    BETWEEN '2019-01-01' AND '2019-12-31'
+```
+---
+
+# [**GROUP BY**](GROUP_BY.md)
+
+```SQL
+SELECT
+    SUM(invoice_total) AS total_sales
+FROM invoices
+GROUP BY client_id
+```
+
+```SQL
+SELECT
+    client_id,
+    SUM(invoice_total) AS total_sales
+FROM invoices
+GROUP BY client_id
+ORDER BY total_sales DESC
+```
+
+```SQL
+SELECT
+    client_id,
+    SUM(invoice_total) AS total_sales
+FROM invoices
+GROUP BY client_id
+WHERE invoice_date >= '2019-07-01'
+ORDER BY total_sales DESC
+
+```
+
+
+```SQL
+SELECT
+    state,
+    city,
+    SUM(invoice_total) AS total_sales
+FROM invoices i
+JOIN clients
+    USING (client_id)
+GROUP BY state , city
+```
+
+```SQL
+SELECT
+    date,
+    pm.name AS payment_method,
+    SUM(amount) AS total_payments
+FROM payments p
+JOIN payment_methods pm
+    ON p.payment_method = pm.payment_method_id
+GROUP BY date , payment_method
+ORDER BY date
+
+```
+---
+
+[**HAVING**](HAVING.md)
+
+```SQL
+SELECT
+    client_id,
+    SUM(invoice_total) AS total_sales
+FROM invoices
+GROUP BY client_id
+HAVING total_sales > 500
+
+```
+
+
+```SQL
+SELECT
+    client_id,
+    SUM(invoice_total) AS total_sales
+    COUNT(*) AS number_of_invoices
+FROM invoices
+GROUP BY client_id
+HAVING total_sales > 500 AND number_of_invoices > 5
+```
+
+--ex--
+> Get the customers
+>       located in Virginia
+>       who have spent more then $100
+
+```SQL
+SELECT
+    c.customer_id,
+    c.first_name,
+    c.lastname,
+    SUM(oi.quantity*oi.unit_price) AS total_sales
+FROM cusotmer c
+JOIN order o
+    USING (customer_id)
+JOIN order_items oi USING (order_id)
+WHERE state = 'VA'
+GROUP BY -- all the select column needed to use in Group by
+    c.customer_id,
+    c.first_name,
+    c.last_name
+HAVING total_sales > 100
+```
+---
+
+# [**ROLLUP**](ROLLUP.md)
+> it basiclly calculate the sum of values.
+
+```SQL
+SELECT
+    client_id,
+    SUM(invoice_total) AS total_sales
+FROM invoices
+GROUP BY client_id WITH ROLLUP
+```
+
+```SQL
+SELECT
+    client_id,
+    SUM(invoice_total) AS total_sales
+FROM invoices
+GROUP BY client_id WITH ROLLUP
+```
+
+```SQL
+SELECT
+    state,
+    city,
+    SUM(invoice_total) AS total_sales
+FROM invoices i
+JOIN clients c USING (client_id)
+GROUP BY state, city WITH ROLLUP
+```
+
+
+```SQL
+
+SELECT
+    payment_method,
+    SUM(amount) AS total
+FROM payments
+GROUP BY payment_method WITH ROLLUP
+
+```
+
+
+```SQL
+SELECT
+    pm.name AS payment_method,
+    SUM(amount) AS total
+FROM payments p
+JOIN payment_methods pm
+    ON p.payment_method = pm.payment_method_id
+GROUP BY pm.name WITH ROLLUP
+```
