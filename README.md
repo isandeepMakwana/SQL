@@ -109,13 +109,13 @@ SELECT * FROM customers WHERE last_name REGEXP 'field$|mac$'; -- is equal to fie
 SELECT * FROM customers WHERE last_name REGEXP 'field$|^mac|rose'; -- is equal to field% or %mac or %rose%
 
 SELECT * FROM customers WHERE last_name REGEXP '[gie]e';
--- it find.   ge
+-- it find.   		 ge
 -- 			 ie
 -- 			 me
 
 
 SELECT * FROM customers WHERE last_name REGEXP 'e[fmq]';
--- it find.   ef
+-- it find.   		 ef
 -- 			 em
 -- 			 eq
 
